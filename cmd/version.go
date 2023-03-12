@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"runtime"
+	"runtime/debug"
 
 	"github.com/spf13/cobra"
 )
@@ -22,9 +23,14 @@ Arch: %s`, Version, runtime.GOOS, runtime.GOARCH)
 var versionCmd = &cobra.Command{
 	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
+		i, ok := debug.ReadBuildInfo()
+		if !ok {
+			Version = "unknown"
+		}
+		Version = i.Main.Version
 		fmt.Println(getVersion())
 	},
-	Short: "Show version info",
+	Short: "Show cli version info",
 }
 
 func init() {
