@@ -23,11 +23,11 @@ Arch: %s`, Version, runtime.GOOS, runtime.GOARCH)
 var versionCmd = &cobra.Command{
 	Use: "version",
 	Run: func(cmd *cobra.Command, args []string) {
-		i, ok := debug.ReadBuildInfo()
+		info, ok := debug.ReadBuildInfo()
 		if !ok {
 			Version = "unknown"
 		}
-		Version = i.Main.Version
+		Version = info.Main.Version
 		fmt.Println(getVersion())
 	},
 	Short: "Show cli version info",
