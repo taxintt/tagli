@@ -1,15 +1,17 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
-	"io"
 	"log"
 	"os"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/cobra"
+)
+
+var (
+	RepositoryPath = "."
 )
 
 var encodeCmd = &cobra.Command{
@@ -21,54 +23,30 @@ var encodeCmd = &cobra.Command{
 }
 
 func listTags() {
-	appPath := "."
-	r, err := git.PlainOpen(appPath)
-
+	repo, err := git.PlainOpen(RepositoryPath)
 	if err != nil {
 		log.Fatal(err)
 	}
-	hashCommit, err := r.Head()
-	if err != nil {
-		log.Fatal("head", err)
-	}
-	fmt.Println("hash", hashCommit)
 
-	tags := make(map[plumbing.Hash]string)
-
-	iter, err := r.Tags()
+	iterator, err := repo.Tags()
 	if err != nil {
 		os.Exit(1)
 	}
 
-	for {
-		ref, err := iter.Next()
-		if errors.Is(err, io.EOF) {
-			break
+	if err := iterator.ForEach(func(ref *plumbing.Reference) error {
+		obj, err := repo.TagObject(ref.Hash())
+		switch err {
+		case nil:
+			fmt.Println(obj.Name)
+		case plumbing.ErrObjectNotFound:
+			fmt.Println("there is no tags")
+		default:
+			return err
 		}
-		if err != nil {
-			os.Exit(1)
-		}
-		tags[ref.Hash()] = ref.Name().Short()
-
+		return nil
+	}); err != nil {
+		log.Fatal(err)
 	}
-
-	cIter, err := r.Log(&git.LogOptions{From: hashCommit.Hash()})
-	for {
-		commit, err := cIter.Next()
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if str, ok := tags[commit.Hash]; ok {
-			fmt.Printf("%s-%s\n", str, hashCommit.Hash().String()[:8])
-			return
-		}
-	}
-
-	fmt.Println(hashCommit.Hash().String()[:8])
 	os.Exit(0)
 }
 
