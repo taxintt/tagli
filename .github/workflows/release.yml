@@ -19,10 +19,11 @@ jobs:
           go-version-file: go.mod
           cache: true
       - id: github_token
-        uses: tibdex/github-app-token@v1
+        uses: getsentry/action-github-app-token@v2
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
+          scope: ${{ github.repository_owner }}
       - uses: goreleaser/goreleaser-action@v4
         with:
           args: release --clean
