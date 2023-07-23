@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -17,12 +16,12 @@ var (
 var encodeCmd = &cobra.Command{
 	Use: "list",
 	Run: func(cmd *cobra.Command, args []string) {
-		listTags()
+		listGitTags()
 	},
 	Short: "List all tags of Git repository",
 }
 
-func listTags() {
+func listGitTags() {
 	repo, err := git.PlainOpen(RepositoryPath)
 	if err != nil {
 		log.Fatal(err)
@@ -33,18 +32,19 @@ func listTags() {
 		os.Exit(1)
 	}
 
-	if err := iterator.ForEach(func(ref *plumbing.Reference) error {
+	err = iterator.ForEach(func(ref *plumbing.Reference) error {
 		obj, err := repo.TagObject(ref.Hash())
 		switch err {
 		case nil:
-			fmt.Println(obj.Name)
+			log.Printf("Tag: %s\n", obj.Name)
 		case plumbing.ErrObjectNotFound:
-			fmt.Println("there is no tags")
+			log.Print("There is no tags")
 		default:
 			return err
 		}
 		return nil
-	}); err != nil {
+	})
+	if err != nil {
 		log.Fatal(err)
 	}
 	os.Exit(0)
