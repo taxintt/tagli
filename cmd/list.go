@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing/storer"
 	"github.com/spf13/cobra"
 )
 
@@ -37,22 +36,21 @@ func listGitTags(isJsonOutput bool) {
 		os.Exit(1)
 	}
 
+	if isJsonOutput {
+		printJsonFormat(repo)
+	} else {
+		printPlainFormat(repo)
+	}
+	os.Exit(0)
+}
+
+func printJsonFormat(repo *git.Repository) {
+	tags := make(map[string]string)
 	iter, err := repo.Tags()
 	if err != nil {
 		fmt.Println("Failed to get tags")
 		os.Exit(1)
 	}
-
-	if isJsonOutput {
-		printJsonFormat(iter)
-	} else {
-		printPlainFormat(iter)
-	}
-	os.Exit(0)
-}
-
-func printJsonFormat(iter storer.ReferenceIter) {
-	tags := make(map[string]string)
 	for {
 		ref, err := iter.Next()
 		if errors.Is(err, io.EOF) {
@@ -73,7 +71,12 @@ func printJsonFormat(iter storer.ReferenceIter) {
 	fmt.Println(string(bytes))
 }
 
-func printPlainFormat(iter storer.ReferenceIter) {
+func printPlainFormat(repo *git.Repository) {
+	iter, err := repo.Tags()
+	if err != nil {
+		fmt.Println("Failed to get tags")
+		os.Exit(1)
+	}
 	for {
 		ref, err := iter.Next()
 		if errors.Is(err, io.EOF) {
