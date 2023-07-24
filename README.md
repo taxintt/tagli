@@ -12,3 +12,8 @@ tagli is cli tool that handles git tags.
   "v0.0.4": "d997070dd22e6734b4ca6b2d59548795d35119dc"
 }
 ```
+
+## increment
+```bash
+tagli increment -t v0.0.6 -v major
+```
