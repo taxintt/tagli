@@ -31,6 +31,7 @@ func listGitTags(isJsonOutput bool) {
 	repo, err := git.PlainOpen(RepositoryPath)
 	if errors.Is(err, git.ErrRepositoryNotExists) {
 		fmt.Println("Repository not exists")
+		os.Exit(1)
 	} else if err != nil {
 		fmt.Println("Failed to open repository")
 		os.Exit(1)
