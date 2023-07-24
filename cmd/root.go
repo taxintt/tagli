@@ -7,7 +7,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "git-tag-manager",
+	Use:   "tagli",
 	Short: "CLI tool to handle Git Tag",
 }
 

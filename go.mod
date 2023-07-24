@@ -1,4 +1,4 @@
-module github.com/taxintt/git-tag-manager
+module github.com/taxintt/tagli
 
 go 1.19
 
