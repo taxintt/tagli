@@ -11,8 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RepositoryPath string
-
 var listCmd = &cobra.Command{
 	Use: "list",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -94,6 +92,6 @@ func printPlainFormat(repo *git.Repository) {
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	listCmd.PersistentFlags().StringVar(&RepositoryPath, "repo", ".", "Path to Git repository")
+	listCmd.PersistentFlags().StringVarP(&RepositoryPath, "repo", "r", ".", "Path to Git repository")
 	listCmd.Flags().BoolP("json", "j", false, "Print output in JSON format")
 }
