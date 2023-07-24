@@ -13,7 +13,7 @@ var (
 )
 
 func getVersion() string {
-	return fmt.Sprintf(`git-tag-manager
+	return fmt.Sprintf(`tagli
 
 Version: %s
 OS: %s
