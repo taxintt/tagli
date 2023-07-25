@@ -11,8 +11,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var RepositoryPath string
-
 var listCmd = &cobra.Command{
 	Use: "list",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -30,10 +28,10 @@ var listCmd = &cobra.Command{
 func listGitTags(isJsonOutput bool) {
 	repo, err := git.PlainOpen(RepositoryPath)
 	if errors.Is(err, git.ErrRepositoryNotExists) {
-		fmt.Println("Repository not exists")
+		fmt.Println("Error: Git Repository not exists")
 		os.Exit(1)
 	} else if err != nil {
-		fmt.Println("Failed to open repository")
+		fmt.Println("Error: Failed to open repository")
 		os.Exit(1)
 	}
 
@@ -94,6 +92,6 @@ func printPlainFormat(repo *git.Repository) {
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	listCmd.PersistentFlags().StringVar(&RepositoryPath, "repo", ".", "Path to Git repository")
+	listCmd.PersistentFlags().StringVarP(&RepositoryPath, "repo", "r", ".", "Path to Git repository")
 	listCmd.Flags().BoolP("json", "j", false, "Print output in JSON format")
 }
