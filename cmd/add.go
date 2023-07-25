@@ -12,6 +12,7 @@ import (
 var addCmd = &cobra.Command{
 	Use: "add",
 	Run: func(cmd *cobra.Command, args []string) {
+		checkGitRepositoryExists(RepositoryPath)
 		tagName, err := cmd.Flags().GetString("tag")
 		if err != nil {
 			fmt.Println("Failed to parse --json option")
