@@ -46,7 +46,8 @@ func tagExists(tag string, repo *git.Repository) bool {
 func addGitTag(tagName string) {
 	repo, err := git.PlainOpen(RepositoryPath)
 	if tagExists(tagName, repo) {
-		fmt.Printf("tag %s already exists", tagName)
+		fmt.Printf("Error: tag %s already exists", tagName)
+		os.Exit(1)
 	}
 
 	head, err := repo.Head()
