@@ -1,6 +1,7 @@
 # tagli
 tagli is cli tool that handles git tags.
 
+Notice: This cli is under development and in beta so the command may contain open issues. 
 
 ## list
 ```bash
@@ -13,7 +14,36 @@ tagli is cli tool that handles git tags.
 }
 ```
 
+## add
+```
+❯ tagli add -t v0.0.6  
+Tag v0.0.6 was created%
+
+❯ git tag -l                              
+v0.0.1
+v0.0.2
+v0.0.3
+v0.0.4
+v0.0.5
+v0.0.6
+```
+
 ## increment
 ```bash
-tagli increment -t v0.0.6 -v major
+❯ git tag -l                                                                 
+v0.0.1
+v0.0.2
+v0.0.3
+v0.0.4
+v0.0.5
+
+❯ tagli increment -t v0.0.5 -v patch                  
+Tag v0.0.6 was created
+
+❯ git tag -l                                                   
+v0.0.1
+v0.0.2
+v0.0.3
+v0.0.4
+v0.0.5
 ```
