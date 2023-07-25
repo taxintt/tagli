@@ -12,6 +12,8 @@ import (
 var incrementCmd = &cobra.Command{
 	Use: "increment",
 	Run: func(cmd *cobra.Command, args []string) {
+		checkGitRepositoryExists(RepositoryPath)
+
 		tagName, err := cmd.Flags().GetString("tag")
 		if err != nil {
 			fmt.Println("Failed to parse --tag option")
@@ -74,18 +76,31 @@ func increment(tagName string, incrementValue int, version string) string {
 	return ""
 }
 
+func containsVprefix(tagName string) bool {
+	return tagName[0] == 'v'
+}
+
 func incrementMajor(version *semver.Version, incrementValue int) string {
 	m := version.IncMajor()
+	if containsVprefix(version.Original()) {
+		return "v" + m.String()
+	}
 	return m.String()
 }
 
 func incrementMinor(version *semver.Version, incrementValue int) string {
 	m := version.IncMinor()
+	if containsVprefix(version.Original()) {
+		return "v" + m.String()
+	}
 	return m.String()
 }
 
 func incrementPatch(version *semver.Version, incrementValue int) string {
 	m := version.IncPatch()
+	if containsVprefix(version.Original()) {
+		return "v" + m.String()
+	}
 	return m.String()
 }
 
