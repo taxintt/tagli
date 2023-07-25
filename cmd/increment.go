@@ -106,7 +106,7 @@ func init() {
 	incrementCmd.Flags().StringP("tag", "t", "", "tag name")
 	incrementCmd.Flags().IntP("increment", "i", 1, "increment value")
 	incrementCmd.Flags().StringP("repository", "r", ".", "repository path")
-	incrementCmd.Flags().StringP("version", "v", "", "version")
+	incrementCmd.Flags().StringP("version", "v", "", "version (patch, minor, major))")
 
 	incrementCmd.MarkFlagRequired("tag")
 	incrementCmd.MarkFlagRequired("version")
