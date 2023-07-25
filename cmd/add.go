@@ -68,5 +68,7 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 
 	addCmd.Flags().StringVarP(&RepositoryPath, "repo", "r", ".", "Path to Git repository")
-	addCmd.Flags().StringVarP(&tagName, "tag", "t", ".", "Git tag")
+	addCmd.Flags().StringVarP(&tagName, "tag", "t", "", "Git tag")
+
+	addCmd.MarkFlagRequired("tag")
 }
