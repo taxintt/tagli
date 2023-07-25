@@ -15,7 +15,7 @@ Notice: This cli is under development and in beta so the command may contain ope
 ```
 
 ## add
-```
+```bash
 ❯ tagli add -t v0.0.6  
 Tag v0.0.6 was created%
 
