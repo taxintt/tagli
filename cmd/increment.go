@@ -49,6 +49,8 @@ func incrementGitTag(tagName string, incrementValue int, version string) {
 		fmt.Printf("create tag error: %s", err)
 		os.Exit(1)
 	}
+	fmt.Printf("Tag %s was created\n", incrementTag)
+	os.Exit(0)
 }
 
 func increment(tagName string, incrementValue int, version string) string {
