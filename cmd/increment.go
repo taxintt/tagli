@@ -37,10 +37,6 @@ var incrementCmd = &cobra.Command{
 
 func incrementGitTag(tagName string, incrementValue int, version string) {
 	repo, err := git.PlainOpen(RepositoryPath)
-	if tagExists(tagName, repo) {
-		fmt.Printf("tag %s already exists", tagName)
-	}
-
 	head, err := repo.Head()
 	if err != nil {
 		fmt.Printf("get HEAD error: %s", err)
@@ -53,6 +49,8 @@ func incrementGitTag(tagName string, incrementValue int, version string) {
 		fmt.Printf("create tag error: %s", err)
 		os.Exit(1)
 	}
+	fmt.Printf("Tag %s was created\n", incrementTag)
+	os.Exit(0)
 }
 
 func increment(tagName string, incrementValue int, version string) string {
@@ -108,7 +106,7 @@ func init() {
 	incrementCmd.Flags().StringP("tag", "t", "", "tag name")
 	incrementCmd.Flags().IntP("increment", "i", 1, "increment value")
 	incrementCmd.Flags().StringP("repository", "r", ".", "repository path")
-	incrementCmd.Flags().StringP("version", "v", "", "version")
+	incrementCmd.Flags().StringP("version", "v", "", "version (patch, minor, major))")
 
 	incrementCmd.MarkFlagRequired("tag")
 	incrementCmd.MarkFlagRequired("version")
