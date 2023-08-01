@@ -8,16 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	Version = "dev"
-)
+var version string
 
-func getVersion() string {
+func getVersion(version string) string {
 	return fmt.Sprintf(`tagli
 
 Version: %s
 OS: %s
-Arch: %s`, Version, runtime.GOOS, runtime.GOARCH)
+Arch: %s`, version, runtime.GOOS, runtime.GOARCH)
 }
 
 var versionCmd = &cobra.Command{
@@ -25,10 +23,9 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		info, ok := debug.ReadBuildInfo()
 		if !ok {
-			Version = "unknown"
+			version = "unknown"
 		}
-		Version = info.Main.Version
-		fmt.Println(getVersion())
+		fmt.Println(getVersion(info.Main.Version))
 	},
 	Short: "Show cli version info",
 }
