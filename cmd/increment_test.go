@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func testIncrementVersion(t *testing.T) {
+func TestIncrementVersion(t *testing.T) {
 	testCases := []struct {
 		name            string
 		currentVersion  string

@@ -81,7 +81,10 @@ func containsVprefix(tagName string) bool {
 }
 
 func incrementMajor(version *semver.Version, incrementValue int) string {
-	m := version.IncMajor()
+	var m *semver.Version = version
+	for i := 0; i < incrementValue; i++ {
+		*m = version.IncMajor()
+	}
 	if containsVprefix(version.Original()) {
 		return "v" + m.String()
 	}
@@ -89,7 +92,10 @@ func incrementMajor(version *semver.Version, incrementValue int) string {
 }
 
 func incrementMinor(version *semver.Version, incrementValue int) string {
-	m := version.IncMinor()
+	var m *semver.Version = version
+	for i := 0; i < incrementValue; i++ {
+		*m = version.IncMinor()
+	}
 	if containsVprefix(version.Original()) {
 		return "v" + m.String()
 	}
@@ -97,7 +103,10 @@ func incrementMinor(version *semver.Version, incrementValue int) string {
 }
 
 func incrementPatch(version *semver.Version, incrementValue int) string {
-	m := version.IncPatch()
+	var m *semver.Version = version
+	for i := 0; i < incrementValue; i++ {
+		*m = version.IncPatch()
+	}
 	if containsVprefix(version.Original()) {
 		return "v" + m.String()
 	}
@@ -108,9 +117,9 @@ func init() {
 	incrementCmd.Flags().StringP("tag", "t", "", "tag name")
 	incrementCmd.Flags().IntP("increment", "i", 1, "increment value")
 	incrementCmd.Flags().StringP("repository", "r", ".", "repository path")
-	incrementCmd.Flags().StringP("version", "v", "", "version (patch, minor, major))")
+	incrementCmd.Flags().StringP("type", "", "", "version type (patch, minor, major))")
 
 	incrementCmd.MarkFlagRequired("tag")
-	incrementCmd.MarkFlagRequired("version")
+	incrementCmd.MarkFlagRequired("type")
 	rootCmd.AddCommand(incrementCmd)
 }
