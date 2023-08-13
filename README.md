@@ -37,7 +37,7 @@ v0.0.3
 v0.0.4
 v0.0.5
 
-❯ tagli increment -t v0.0.5 -v patch                  
+❯ tagli increment -t v0.0.5 --type patch                  
 Tag v0.0.6 was created
 
 ❯ git tag -l                                                   
