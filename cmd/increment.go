@@ -25,17 +25,17 @@ var incrementCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		version, err := cmd.Flags().GetString("version")
+		versionType, err := cmd.Flags().GetString("type")
 		if err != nil {
-			fmt.Println("Failed to parse --version option")
+			fmt.Println("Failed to parse --type option")
 			os.Exit(1)
 		}
-		incrementGitTag(tagName, incrementValue, version)
+		incrementGitTag(tagName, incrementValue, versionType)
 	},
 	Short: "Increment a tag of Git repository",
 }
 
-func incrementGitTag(tagName string, incrementValue int, version string) {
+func incrementGitTag(tagName string, incrementValue int, versionType string) {
 	repo, err := git.PlainOpen(RepositoryPath)
 	head, err := repo.Head()
 	if err != nil {
@@ -43,7 +43,12 @@ func incrementGitTag(tagName string, incrementValue int, version string) {
 		os.Exit(1)
 	}
 
-	incrementTag := increment(tagName, incrementValue, version)
+	incrementTag, err := incrementVersion(tagName, incrementValue, versionType)
+	if err != nil {
+		fmt.Printf("increment version error: %s", err)
+		os.Exit(1)
+	}
+
 	_, err = repo.CreateTag(incrementTag, head.Hash(), nil)
 	if err != nil {
 		fmt.Printf("create tag error: %s", err)
@@ -53,25 +58,22 @@ func incrementGitTag(tagName string, incrementValue int, version string) {
 	os.Exit(0)
 }
 
-func increment(tagName string, incrementValue int, version string) string {
+func incrementVersion(tagName string, incrementValue int, versionType string) (string, error) {
 	versionObj, err := semver.NewVersion(tagName)
 	if err != nil {
-		fmt.Printf("create tag error: %s", err)
-		os.Exit(1)
+		return "", fmt.Errorf("Invalid version: %s", tagName)
 	}
 
-	switch version {
+	switch versionType {
 	case "major":
-		return incrementMajor(versionObj, incrementValue)
+		return incrementMajor(versionObj, incrementValue), nil
 	case "minor":
-		return incrementMinor(versionObj, incrementValue)
+		return incrementMinor(versionObj, incrementValue), nil
 	case "patch":
-		return incrementPatch(versionObj, incrementValue)
+		return incrementPatch(versionObj, incrementValue), nil
 	default:
-		fmt.Println("Invalid version")
-		os.Exit(1)
+		return "", fmt.Errorf("Invalid version type: %s", versionType)
 	}
-	return ""
 }
 
 func containsVprefix(tagName string) bool {
