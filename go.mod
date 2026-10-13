@@ -1,6 +1,6 @@
 module github.com/taxintt/tagli
 
-go 1.20
+go 1.25.0
 
 require (
 	github.com/go-git/go-git/v5 v5.12.0
@@ -31,8 +31,8 @@ require (
 	github.com/skeema/knownhosts v1.2.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
-	golang.org/x/crypto v0.21.0 // indirect
-	golang.org/x/net v0.22.0 // indirect
-	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/crypto v0.52.0 // indirect
+	golang.org/x/net v0.54.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
